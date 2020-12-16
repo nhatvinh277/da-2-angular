@@ -1,0 +1,19 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/library",
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+      "@ng-bootstrap/ng-bootstrap": "@ng-bootstrap/ng-bootstrap",
+      "ng-inline-svg": "ng-inline-svg",
+      "@ngx-translate/core": "@ngx-translate/core",
+      "object-path": "object-path",
+      "ngx-perfect-scrollbar": "ngx-perfect-scrollbar",
+      "ngx-mat-select-search": "ngx-mat-select-search",
+      "ngx-permissions": "ngx-permissions",
+      "ngx-smart-popover": "ngx-smart-popover",
+      "ngx-highlightjs": "ngx-highlightjs",
+      "ng-apexcharts":"ng-apexcharts"
+    }
+  }
+}
