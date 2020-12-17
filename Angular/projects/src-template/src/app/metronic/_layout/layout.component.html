@@ -27,7 +27,7 @@
         <!-- end:: Header -->
 
         <!-- begin:: Content -->
-        <div class="content d-flex flex-column flex-column-fluid" id="kt_content" [ngClass]="contentClasses">
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="background-color: rgb(255, 255, 255);" [ngClass]="contentClasses">
           <!-- begin:: Content Head -->
           <ng-container *ngIf="subheaderDisplay">
             <app-subheader-wrapper></app-subheader-wrapper>
@@ -41,7 +41,7 @@
 
           <ng-container *ngIf="!contentExtended">
             <!--begin::Entry-->
-            <div class="d-flex flex-column-fluid" style="align-items: center;">
+            <div class="d-flex flex-column-fluid" style="align-items: inherit;">
               <!--begin::Container-->
               <div [ngClass]="contentContainerClasses">
                 <router-outlet></router-outlet>
@@ -53,11 +53,11 @@
           <!-- end:: Content Body -->
         </div>
         <!-- end:: Content -->
-        <ng-container *ngIf="footerDisplay">
+        <!-- <ng-container *ngIf="footerDisplay"> -->
           <!--begin::Footer-->
-          <app-footer class="footer bg-white py-4 d-flex flex-lg-column w-100" id="kt_footer"[ngClass]="footerCSSClasses"></app-footer>
+          <!-- <app-footer class="footer bg-white py-4 d-flex flex-lg-column w-100" id="kt_footer"[ngClass]="footerCSSClasses"></app-footer> -->
           <!--end::Footer-->
-        </ng-container>
+        <!-- </ng-container> -->
       </div>
       <!--end::Wrapper-->
     </div>
@@ -89,7 +89,7 @@
       <app-user-offcanvas></app-user-offcanvas>
     </ng-container>
 
-    <app-toolbar></app-toolbar>
+    <!-- <app-toolbar></app-toolbar> -->
 
     <ng-container *ngIf="extrasScrollTopDisplay">
       <app-scroll-top></app-scroll-top>

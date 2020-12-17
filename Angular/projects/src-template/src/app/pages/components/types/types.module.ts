@@ -4,32 +4,33 @@ import { RouterModule } from '@angular/router';
 import { LibExportModule } from 'library';
 import { ReferenceModule } from '../../reference.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HomeComponent } from './home.component';
 import { WidgetsModule } from '../../../metronic/partials/content/widgets/widgets.module';
-import { ItemsComponent } from './items/items.component';
-import { HomeService } from './services/home.service';
+import { TypesService } from './services/types.service';
+import { TypesComponent } from './types.component';
+import { HomeModule } from '../home/home.module';
 
 @NgModule({
-  declarations: [HomeComponent,ItemsComponent],
+  declarations: [TypesComponent],
   imports: [
     CommonModule,
     LibExportModule,
     ReferenceModule,
     FormsModule,
     WidgetsModule,
+    HomeModule,
     ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: '',
-        component: HomeComponent,
-      }
+        component: TypesComponent,
+      },
     ]),
   ],
   providers:[
-    HomeService
+    TypesService
   ],
   exports:[
-    ItemsComponent
+    TypesComponent
   ]
 })
-export class HomeModule {}
+export class TypesModule {}

@@ -1,25 +1,20 @@
-<div class="card card-custom card-stretch gutter-b">
-  <div class="card-body pt-2">
+<div class="card">
+  <div>
     <a class="product-item" data-view-index="0" data-view-id="product_list_item" href="https://tiki.vn/dien-thoai-vsmart-star-4-4gb-64gb-hang-chinh-hang-tiki-doc-quyen-p59043375.html?spid=59503241">
       <span class="style__StyledItem-sc-18svp8n-0 bHrHjw">
         <div>
           <div class="thumbnail">
             <div class="badge-top">
             </div>
-            <img src="https://salt.tikicdn.com/cache/200x200/ts/product/9e/90/ac/7daa29266a98ae64a149e93cfa7537d6.jpg" alt="Điện thoại Vsmart Star 4 (4GB/64GB) - Hàng chính hãng">
+            <img [src]="linkimage" [alt]="name">
           </div>
           <div class="info">
             <div class="badge-service">
               <div class="item">
-                <div>
-                  <img width="56" height="16" src="https://salt.tikicdn.com/ts/upload/9f/32/dd/8a8d39d4453399569dfb3e80fe01de75.png">
-                </div>
-                <span style="color: rgb(0, 153, 0);">GIAO NGAY 2H - 3H
-                </span>
               </div>
             </div>
             <div class="name">
-              <span>Điện thoại Vsmart Star 4 (4GB/64GB) - Hàng chính hãng</span>
+              <span>{{name}}</span>
             </div>
             <div class="rating-review">
               <div class="rating">
@@ -82,10 +77,10 @@
               </div>
             </div>
             <div class="price-discount">
-              <div class="price-discount__price">2.090.000 ₫
+              <div class="price-discount__price">{{money}} ₫
 
               </div>
-              <div class="price-discount__discount">-22%
+              <div class="price-discount__discount">{{sales}}%
 
               </div>
             </div>

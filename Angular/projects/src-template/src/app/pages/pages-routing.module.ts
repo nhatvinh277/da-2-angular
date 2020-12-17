@@ -63,6 +63,11 @@ const routes: Routes = [
           import('./components/home/home.module').then((m) => m.HomeModule),
       },
       {
+        path: 'type/:type',
+        loadChildren: () =>
+          import('./components/types/types.module').then((m) => m.TypesModule),
+      },
+      {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full',
