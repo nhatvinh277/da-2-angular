@@ -1,12 +1,12 @@
 <div class="card">
   <div>
-    <a class="product-item" data-view-index="0" data-view-id="product_list_item" href="https://tiki.vn/dien-thoai-vsmart-star-4-4gb-64gb-hang-chinh-hang-tiki-doc-quyen-p59043375.html?spid=59503241">
+    <a class="product-item" role="button" (click)="detail()" data-view-index="0" data-view-id="product_list_item">
       <span class="style__StyledItem-sc-18svp8n-0 bHrHjw">
         <div>
           <div class="thumbnail">
             <div class="badge-top">
             </div>
-            <img [src]="linkimage" [alt]="name">
+            <img [src]="linkimage" width="200px" [alt]="name">
           </div>
           <div class="info">
             <div class="badge-service">
@@ -45,7 +45,7 @@
                     </path>
                   </svg>
                 </div>
-                <div class="rating__average" style="width: 90%;">
+                <div class="rating__average" [ngStyle]="getWidth()">
                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" size="12" color="#fdd836" height="12" width="12" xmlns="http://www.w3.org/2000/svg" style="color: rgb(253, 216, 54);">
                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z">
 
@@ -73,14 +73,14 @@
                     </svg>
                 </div>
               </div>
-              <div class="review">(490)
+              <div class="review">({{RateNumber}})
               </div>
             </div>
             <div class="price-discount">
-              <div class="price-discount__price">{{money}} ₫
+              <div class="price-discount__price">{{f_currency(money)}} ₫
 
               </div>
-              <div class="price-discount__discount">{{sales}}%
+              <div class="price-discount__discount">-{{sales}}%
 
               </div>
             </div>

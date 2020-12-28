@@ -1,6 +1,9 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { LayoutService } from '../../../core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { DynamicAsideMenuService, LayoutService } from '../../../core';
 
 @Component({
   selector: 'app-aside',
@@ -19,9 +22,16 @@ export class AsideComponent implements OnInit {
   brandClasses: string;
   asideMenuScroll = 1;
   asideSelfMinimizeToggle = false;
+  
+  menuConfig: any;
+  subscriptions: Subscription[] = [];
 
+  currentUrl: string;
   constructor(
       private layout: LayoutService,
+      private router: Router,
+      private menu: DynamicAsideMenuService,
+      private cdr: ChangeDetectorRef,
       private loc: Location
     ) { }
 
@@ -41,8 +51,22 @@ export class AsideComponent implements OnInit {
     );
     this.asideMenuScroll = this.layout.getProp('aside.menu.scroll') ? 1 : 0;
     this.asideMenuCSSClasses = `${this.asideMenuCSSClasses} ${this.asideMenuScroll === 1 ? 'scroll my-4 ps ps--active-y' : ''}`;
-    // Routing
-    this.location = this.loc;
+    // router subscription
+    this.currentUrl = this.router.url.split(/[?#]/)[0];
+    const routerSubscr = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.currentUrl = event.url;
+      this.cdr.detectChanges();
+    });
+    this.subscriptions.push(routerSubscr);
+    
+    // menu load
+    const menuSubscr = this.menu.menuConfig$.subscribe(res => {
+      this.menuConfig = res;
+      this.cdr.detectChanges();
+    });
+    this.subscriptions.push(menuSubscr);
   }
 
   private getLogo() {
@@ -51,5 +75,23 @@ export class AsideComponent implements OnInit {
     } else {
       return './assets/media/logos/logo-light.png';
     }
+  }
+  isMenuItemActive(path) {
+    if (!this.currentUrl || !path) {
+      return false;
+    }
+
+    if (this.currentUrl === path) {
+      return true;
+    }
+
+    if (this.currentUrl.indexOf(path) > -1) {
+      return true;
+    }
+
+    return false;
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 }

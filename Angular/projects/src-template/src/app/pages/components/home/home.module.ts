@@ -8,9 +8,15 @@ import { HomeComponent } from './home.component';
 import { WidgetsModule } from '../../../metronic/partials/content/widgets/widgets.module';
 import { ItemsComponent } from './items/items.component';
 import { HomeService } from './services/home.service';
+import { DetailItemsComponent } from './detail-item/detail-items.component';
+import { OrdersItemsComponent } from './orders-items/orders-items.component';
 
 @NgModule({
-  declarations: [HomeComponent,ItemsComponent],
+  declarations: [
+    HomeComponent,
+    ItemsComponent,
+    DetailItemsComponent
+  ],
   imports: [
     CommonModule,
     LibExportModule,
@@ -22,6 +28,10 @@ import { HomeService } from './services/home.service';
       {
         path: '',
         component: HomeComponent,
+      },
+      {
+        path: 'detail/:id',
+        component: DetailItemsComponent,
       }
     ]),
   ],
@@ -29,7 +39,10 @@ import { HomeService } from './services/home.service';
     HomeService
   ],
   exports:[
-    ItemsComponent
+    ItemsComponent,
+    DetailItemsComponent
+  ],
+  entryComponents:[
   ]
 })
 export class HomeModule {}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 import { Observable } from 'rxjs';
-import { AuthService,UserModel } from 'library';
+import { AuthService } from '../../../../../../../app/metronic/_services/auth.service';
+import { UserModel } from '../../../../../../../app/metronic/_models/user.model';
 
 @Component({
   selector: 'app-user-offcanvas',

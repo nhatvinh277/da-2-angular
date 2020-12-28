@@ -41,4 +41,15 @@ export class HomeService {
 			params: httpParams
 		});
 	}
+	
+	getDetail(id: number): Observable<any> {
+		const url = API_ROOT_URL + `/Detail?id=${id}`;
+		return this.http.get<any>(url, {});
+	}
+	
+	Orders(data): Observable<any> {
+		const httpHeaders = this.httpUtils.getHttpHeaders();
+		const url = `${API_ROOT_URL}/Orders`;
+		return this.http.post<any>(url, data, { headers: httpHeaders });
+	}
 }

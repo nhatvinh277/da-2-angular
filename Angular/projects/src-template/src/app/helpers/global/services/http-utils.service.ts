@@ -13,13 +13,13 @@ export class HttpUtilsService{
     
     getHttpHeaders(isFormData? : boolean): HttpHeaders{
         var _token = '';
-        this.tokenStorage.getToken().subscribe(res => {_token = res;});
+        this.tokenStorage.getAccessToken().subscribe(t => { _token = t; });
         let result = new HttpHeaders({
             'Authorization':'Bearer ' + _token,
         });
-        // if(!isFormData){
-        //     result.append("Content-Type", "application/json");
-        // }
+        if(!isFormData){
+            result.append("Content-Type", "application/json");
+        }
         // if(!_token){
         //     this.router.navigate(['/sign-in']);;
         //     return result;

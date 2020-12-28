@@ -13,6 +13,9 @@ import { DungChungService } from './components/_common/_services/dung-chung.serv
 import { MaterialsAngularModule } from 'library';
 import { LayoutUtilsService } from '../helpers/global/services/layout-utils.service';
 import { LayoutConfigService } from './components/_common/_services/layout-config.service';
+import { OrdersItemsComponent } from './components/home/orders-items/orders-items.component';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
+import { ReviewDialogComponent } from './components/home/review-dialog/review-dialog.component';
 
 @NgModule({
 	imports: [
@@ -35,11 +38,20 @@ import { LayoutConfigService } from './components/_common/_services/layout-confi
 		LayoutConfigService
 	],
 	declarations: [
+		OrdersItemsComponent,
+		ReviewDialogComponent,
+		StarRatingComponent
 	],
 	entryComponents:[
+		OrdersItemsComponent,
+		ReviewDialogComponent,
+		StarRatingComponent
 	],
 	exports:[
-		MaterialsAngularModule
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialsAngularModule,
+		StarRatingComponent
 	]
 })
 export class ReferenceModule {}

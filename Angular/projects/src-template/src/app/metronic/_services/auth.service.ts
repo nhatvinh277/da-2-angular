@@ -1,12 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
-import { map, catchError, switchMap, finalize } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, Subscription, throwError } from 'rxjs';
+import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
 import { UserModel } from '../_models/user.model';
 import { AuthModel } from '../_models/auth.model';
-import { AuthHTTPService } from './auth-http';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { HttpUtilsService } from '../../helpers/global/services/http-utils.service';
+import { HttpClient } from '@angular/common/http';
+import { AuthHTTPService } from './auth-http/auth-http.service';
+import { ApiResponseModel } from '../_models/api-response-model';
+import { TokenStorage } from '../../helpers/global/services/token-storage.service';
 
+const API_LOGIN_URL = environment.ApiRoot + '/user';
 @Injectable({
   providedIn: 'root',
 })
@@ -27,6 +32,9 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private authHttpService: AuthHTTPService,
+    private httpUtils: HttpUtilsService,
+    private tokenStorage: TokenStorage,
+    private http: HttpClient,
     private router: Router
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
@@ -38,28 +46,70 @@ export class AuthService implements OnDestroy {
   }
 
   // public methods
-  login(email: string, password: string): Observable<UserModel> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
-        const result = this.setAuthFromLocalStorage(auth);
-        return result;
-      }),
-      switchMap(() => this.getUserByToken()),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
+  login(username: string, password: string): Observable<any> {
+		let data = {
+			username: username,
+			password: password
+		}
+		return this.http.post<any>(API_LOGIN_URL + "/LoginUser", data)
+			.pipe(
+				map((result: any) => {
+					if (result && result.status !== 1) {
+						return result.error;
+					}
+					return result;
+				}),
+				tap(this.saveAccessData.bind(this)),
+				catchError(this.handleError('', []))
+			);
   }
+  
+  create(data: any): Observable<any> {
+		return this.http.post<any>(API_LOGIN_URL + "/Create", data);
+  }
+	private saveAccessData(response: ApiResponseModel) {  
+		if (typeof response !== 'undefined' && response.status === 1) {
+			this.tokenStorage.clearUserInfo();
+			
+			var accessData = {
+				accessToken: response.data.Token,
+				refreshToken: response.data.Token,
+				username: response.data.UserName,
+				fullname: response.data.Fullname,
+				id: response.data.Id,
+			};
+			var user = {
+				id: accessData.id,
+				accessToken: accessData.accessToken,
+				username: accessData.username,
+				fullname: accessData.fullname
+      }
+			this.tokenStorage.setUserInfo(JSON.stringify(user))
+		}
+		else {
+			throwError({ msg: 'error' });
+		}
+	}
+	private handleError<T>(operation = 'operation', result?: any) {
+		return (error: any): Observable<any> => {
+			// TODO: send the error to remote logging infrastructure
+			console.error("Lỗi", error.message); // log to console instead
 
+			// Let the app keep running by returning an empty result.
+			return of(result);
+		};
+	}
   logout() {
-    localStorage.removeItem(this.authLocalStorageToken);
-    this.router.navigate(['/auth/login'], {
-      queryParams: {},
-    });
+		this.tokenStorage.clearUserInfo();
+    // this.router.navigate(['/auth/login'], {
+    //   queryParams: {},
+    // });
   }
+  resetSession(): Observable<any> {
+		const httpHeaders = this.httpUtils.getHttpHeaders();
+		httpHeaders.set('Content-Type', 'application/json');
+		return this.http.post<any>(API_LOGIN_URL+ '/ResetSession', null, { headers: httpHeaders });
+	}
 
   getUserByToken(): Observable<UserModel> {
     const auth = this.getAuthFromLocalStorage();

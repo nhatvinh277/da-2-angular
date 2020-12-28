@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LayoutService } from '../../../core';
 import KTLayoutQuickSearch from '../../../../../assets/js/layout/extended/quick-search';
 import KTLayoutQuickNotifications from '../../../../../assets/js/layout/extended/quick-notifications';
@@ -11,6 +11,13 @@ import KTLayoutHeaderTopbar from '../../../../../assets/js/layout/base/header-to
 import { KTUtil } from '../../../../../assets/js/components/util';
 import { UserModel } from '../../../_models/user.model';
 import { AuthService } from '../../../_services/auth.service';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { AppState } from '../../../core';
+import { select, Store } from '@ngrx/store';
+import { currentUser } from '../../../core/pipes/auth.selectors';
+import { LayoutUtilsService } from '../../../../../app/helpers/global/services/layout-utils.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-topbar',
@@ -19,6 +26,9 @@ import { AuthService } from '../../../_services/auth.service';
 })
 export class TopbarComponent implements OnInit, AfterViewInit {
   user$: Observable<UserModel>;
+	user2: UserModel = new UserModel();
+	userCurrent = new BehaviorSubject<UserModel>(this.user2);
+	isReset: any;
   // tobbar extras
   extraSearchDisplay: boolean;
   extrasSearchLayout: 'offcanvas' | 'dropdown';
@@ -33,7 +43,16 @@ export class TopbarComponent implements OnInit, AfterViewInit {
   extrasUserDisplay: boolean;
   extrasUserLayout: 'offcanvas' | 'dropdown';
 
-  constructor(private layout: LayoutService, private auth: AuthService) {
+  constructor(private layout: LayoutService,
+    private layoutUtilsService: LayoutUtilsService,
+		private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
+    public dialog: MatDialog,
+		private router: Router,
+		private changeDetect: ChangeDetectorRef,
+    private auth: AuthService)
+  {
+		this.user2.clear();
     this.user$ = this.auth.currentUserSubject.asObservable();
   }
 
@@ -63,6 +82,77 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     this.extrasQuickPanelDisplay = this.layout.getProp(
       'extras.quickPanel.display'
     );
+
+    let user = JSON.parse(localStorage.getItem("UserInfo"));
+    if(user!=null){
+      this.user2.fullname = user.fullname;
+      this.user2.id = user.id;
+      this.user2.isLogin = true;
+      this.userCurrent.next(this.user2);
+      this.user$ = this.store.pipe(select(currentUser));
+
+      this.isReset = setInterval(() => {
+        this.resetSession();
+      }, 240000);
+    }
+    this.changeDetect.detectChanges();
+  }
+  reloadPage(isLogin:boolean){
+    let user = JSON.parse(localStorage.getItem("UserInfo"));
+    this.user2.isLogin = isLogin;
+    if(user!=null){
+      this.user2.fullname = user.fullname;
+      this.user2.id = user.id;
+      this.userCurrent.next(this.user2);
+      this.user$ = this.store.pipe(select(currentUser));
+    }
+    this.changeDetect.detectChanges();
+  }
+
+	resetSession() {
+		try {
+			this.auth.resetSession().subscribe(res => {
+				if (res && res.status == 1) {
+
+					let user = JSON.parse(localStorage.getItem("UserInfo"));
+
+					user.accessToken = res.data;
+
+					localStorage.setItem('UserInfo', JSON.stringify(user));
+				} else {
+          this.auth.logout();
+				}
+			});
+		}
+		catch (ex) {
+      this.auth.logout();
+		}
+  }
+  SignIn(){
+      const dialogRef = this.dialog.open(LoginDialogComponent, {
+        width: '35vw'
+      });
+
+      dialogRef.afterClosed().subscribe(res => {
+        if (res.isChange) {
+          this.reloadPage(true);
+          this.changeDetect.detectChanges();
+          return;
+        }
+        this.reloadPage(false);
+        this.changeDetect.detectChanges();
+      });
+  }
+  history(){
+    this.router.navigateByUrl('/lich-su-dat-hang', { relativeTo: this.activatedRoute });
+  }
+  logout(){
+    clearInterval(this.isReset);
+    this.auth.logout();
+    this.reloadPage(false);
+    const message = `Đăng xuất thành công`;
+    this.layoutUtilsService.showInfo(message);
+    this.router.navigateByUrl('', { relativeTo: this.activatedRoute });
   }
 
   ngAfterViewInit(): void {

@@ -20,6 +20,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { ErrorsModule } from '../modules/errors/errors.module';
 import { TranslationModule } from '../modules/i18n/translation.module';
 import { ReferenceModule } from './reference.module';
+import { LoginDialogComponent } from '../metronic/_layout/components/topbar/login-dialog/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ReferenceModule } from './reference.module';
     TopbarComponent,
     LanguageSelectorComponent,
     AsideDynamicComponent,
+    LoginDialogComponent,
     HeaderMenuDynamicComponent,
   ],
   imports: [
@@ -47,6 +49,9 @@ import { ReferenceModule } from './reference.module';
     SubheaderModule,
     ErrorsModule,
     ReferenceModule
+  ],
+  entryComponents:[
+    LoginDialogComponent
   ]
 })
 export class LayoutModule { }

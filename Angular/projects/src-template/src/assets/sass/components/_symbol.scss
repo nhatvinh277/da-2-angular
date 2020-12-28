@@ -24,7 +24,20 @@
 
         @include border-radius($border-radius);
     }
+    .symbol-label-ok {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
+        line-height: 0;
+        color: $dark-75;
+        background-color: $gray-100;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
 
+        @include border-radius($border-radius);
+    }
     // Badge
     .symbol-badge {
         position: absolute;
@@ -51,6 +64,9 @@
         .symbol-label {
             @include border-radius(50%);
         }
+        .symbol-label-ok {
+            @include border-radius(50%);
+        }
     }
 
     // Theme colors
@@ -61,11 +77,19 @@
                 background-color: $value;
                 color: theme-inverse-color($color);
             }
+            .symbol-label-ok {
+                background-color: $value;
+                color: theme-inverse-color($color);
+            }
         }
 
         // Light style
         &.symbol-light-#{$color} {
             .symbol-label {
+                background-color: theme-light-color($color);
+                color: $value;
+            }
+            .symbol-label-ok {
                 background-color: theme-light-color($color);
                 color: $value;
             }

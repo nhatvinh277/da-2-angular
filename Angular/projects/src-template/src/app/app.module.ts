@@ -22,6 +22,8 @@ import { AuthService } from 'library';
 import { FakeAPIService } from 'library';
 import { SplashScreenModule } from './metronic/partials/layout/splash-screen/splash-screen.module';
 import { LayoutModule } from './pages/layout.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers,metaReducers } from './metronic/core';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -54,6 +56,7 @@ export function getHighlightLanguages() {
     HttpClientModule,
     HighlightModule,
     ClipboardModule,
+		StoreModule.forRoot(reducers, {metaReducers}),
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
           passThruUnknownUrl: true,

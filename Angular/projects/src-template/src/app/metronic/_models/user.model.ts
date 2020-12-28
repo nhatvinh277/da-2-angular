@@ -13,6 +13,7 @@ export class UserModel extends AuthModel {
   occupation: string;
   companyName: string;
   phone: string;
+  isLogin: boolean;
   address?: AddressModel;
   socialNetworks?: SocialNetworksModel;
 
@@ -29,5 +30,24 @@ export class UserModel extends AuthModel {
     this.phone = user.phone || '';
     this.address = user.address;
     this.socialNetworks = user.socialNetworks;
+  }
+  clear(): void {
+    this.id = undefined;
+    this.username = '';
+    this.password = '';
+    this.email = '';
+    this.roles = [];
+    this.isLogin = false;
+    this.fullname = '';
+    this.accessToken = 'access-token-' + Math.random();
+    this.refreshToken = 'access-token-' + Math.random();
+    this.pic = './assets/media/users/default.jpg';
+    this.occupation = '';
+    this.companyName = '';
+    this.phone = '';
+    this.address = new AddressModel();
+    this.address.clear();
+    this.socialNetworks = new SocialNetworksModel();
+    this.socialNetworks.clear();
   }
 }

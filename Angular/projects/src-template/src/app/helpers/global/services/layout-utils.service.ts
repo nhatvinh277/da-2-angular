@@ -7,6 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { ActionNotificationComponent, DeleteEntityDialogComponent, FetchEntityDialogComponent, UpdateStatusDialogComponent } from 'library';
+import { OrdersItemsComponent } from '../../../pages/components/home/orders-items/orders-items.component';
+import { ReviewDialogComponent } from '../../../pages/components/home/review-dialog/review-dialog.component';
 // import { ActionNotificationComponent, DeleteEntityDialogComponent, FetchEntityDialogComponent, UpdateStatusDialogComponent } from 'projects/library/src/public-api';
 const API_URL_BREADCRUMD = '/menu/Breadcrumb';
 
@@ -118,6 +120,31 @@ export class LayoutUtilsService {
 			data: _data,
 			verticalPosition: _verticalPosition,
 		});
+	}
+	showDataOrders(data: any) {
+		var title = "Xác nhận đơn hàng";
+		var description = "Bạn có chắc muốn đặt mặt hàng này?"
+		return this.dialog.open(OrdersItemsComponent, {
+			data: { title, description, data},
+			width: '600px'
+		});
+	}
+	
+	Review(data) {
+		var title = "Đánh giá sản phẩm " + data.Name;
+		var description = "Bạn có chắc muốn đánh giá sản phẩm?"
+		return this.dialog.open(ReviewDialogComponent, {
+			data: { title, description},
+			width: '600px'
+		});
+	}
+
+	showErorr(message){
+		let action = 'Đã hiểu';
+		this.snackBar.open(message, action, {
+			duration: undefined,
+			panelClass: ['mat-toolbar','mat-warn']
+		});	
 	}
 	/**
 	 * Showing Confirmation (Mat-Dialog) before Entity Removing
