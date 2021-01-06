@@ -24,6 +24,8 @@ import { SplashScreenModule } from './metronic/partials/layout/splash-screen/spl
 import { LayoutModule } from './pages/layout.module';
 import { StoreModule } from '@ngrx/store';
 import { reducers,metaReducers } from './metronic/core';
+import { PermissionUrl } from './pages/components/_common/_services/permissionurl';
+import { UserProfileService } from './pages/components/_common/_services/user-profile.service';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -70,6 +72,8 @@ export function getHighlightLanguages() {
     LibExportModule
   ],
   providers: [
+		PermissionUrl,
+		UserProfileService,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializer,

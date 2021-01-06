@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from '../metronic/_layout/layout.component';
+import { PermissionUrl } from './components/_common/_services/permissionurl';
 
 const routes: Routes = [
   {
@@ -124,8 +125,15 @@ const routes: Routes = [
       },
       {
         path: 'lich-su-dat-hang',
+				canActivate: [PermissionUrl],
         loadChildren: () =>
           import('./components/history/history.module').then((m) => m.HistoryModule),
+      },
+      {
+        path: 'quan-ly-items',
+				canActivate: [PermissionUrl],
+        loadChildren: () =>
+          import('./components/admin-items/admin-items.module').then((m) => m.AdminItemsModule),
       },
       {
         path: '**',

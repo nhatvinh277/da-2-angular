@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { LayoutService } from '../../../core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { DynamicAsideMenuService, LayoutService } from '../../../core';
 import KTLayoutQuickSearch from '../../../../../assets/js/layout/extended/quick-search';
 import KTLayoutQuickNotifications from '../../../../../assets/js/layout/extended/quick-notifications';
 import KTLayoutQuickActions from '../../../../../assets/js/layout/extended/quick-actions';
@@ -28,6 +28,8 @@ export class TopbarComponent implements OnInit, AfterViewInit {
   user$: Observable<UserModel>;
 	user2: UserModel = new UserModel();
 	userCurrent = new BehaviorSubject<UserModel>(this.user2);
+  subscriptions: Subscription[] = [];
+  menuConfig: any;
 	isReset: any;
   // tobbar extras
   extraSearchDisplay: boolean;
@@ -49,6 +51,7 @@ export class TopbarComponent implements OnInit, AfterViewInit {
     private store: Store<AppState>,
     public dialog: MatDialog,
 		private router: Router,
+    private menu: DynamicAsideMenuService,
 		private changeDetect: ChangeDetectorRef,
     private auth: AuthService)
   {
@@ -106,6 +109,8 @@ export class TopbarComponent implements OnInit, AfterViewInit {
       this.userCurrent.next(this.user2);
       this.user$ = this.store.pipe(select(currentUser));
     }
+    // menu load
+    this.menu.loadMenu();
     this.changeDetect.detectChanges();
   }
 

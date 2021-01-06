@@ -3,7 +3,7 @@ import { Observable,  BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { QueryParamsModel } from '../../_common/_models/query-params.model';
-import { HttpUtilsService } from 'projects/src-template/src/app/helpers/global/services/http-utils.service';
+import { HttpUtilsService } from '../../../../helpers/global/services/http-utils.service';
 import { QueryResultsModel } from '../../_common/_models/query-results.model';
 
 const API_ROOT_URL = environment.ApiRoot + '/items';

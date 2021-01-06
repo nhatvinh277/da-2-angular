@@ -27,7 +27,7 @@ export class DynamicAsideMenuService {
 
   // Here you able to load your menu from server/data-base/localStorage
   // Default => from DynamicAsideMenuConfig
-  private loadMenu() {
+  public loadMenu() {
     var fs_Assign = (dt: any) => {
 			let config = {
         items: []

@@ -75,11 +75,13 @@ export class AuthService implements OnDestroy {
 				accessToken: response.data.Token,
 				refreshToken: response.data.Token,
 				username: response.data.UserName,
+				roles: response.data.Rules,
 				fullname: response.data.Fullname,
 				id: response.data.Id,
 			};
 			var user = {
 				id: accessData.id,
+				roles: accessData.roles,
 				accessToken: accessData.accessToken,
 				username: accessData.username,
 				fullname: accessData.fullname
