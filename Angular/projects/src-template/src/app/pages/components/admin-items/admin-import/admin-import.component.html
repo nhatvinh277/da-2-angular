@@ -1,0 +1,152 @@
+<style>
+	.kt-portlet__head-title {
+		font-size: medium;
+		font-family: sans-serif;
+	}
+
+	th.mat-header-cell, td.mat-cell {
+		text-align: center;
+		border: 2px solid #CCC;
+		padding: 5px !important;
+	}
+
+	table {
+		min-width: 100%;
+		/* overflow: auto; */
+	}
+
+	
+	input:disabled{background-color:#F2F4F4; }
+
+	.kt-portlet{
+		min-height: 90vh !important;
+	}
+	.kt-portlet__body{
+		max-height: 80.5vh !important;
+	}
+
+	.required_input::after 
+	{
+		content:" *"; 
+		color: red;
+	}
+</style>
+<div class="btn-close-container">
+	<button class="btn-close" [disabled]="processImport" type="button" mat-mini-fab color="default" (click)="closeDialog()" [disabled]="disabledBtn" >
+		<mat-icon>clear</mat-icon>
+	</button>
+</div>
+<div [ngClass]="{ 'kt-portlet--body-progress kt-portlet--body-progress-overlay' : viewLoading }">
+	<div class="row">
+		<div class="col-md-12 kt-margin-bottom-10-mobile">
+			<h2 style="font-weight: bold;" class="kt-portlet__head-title">IMPORT DỮ LIỆU</h2>
+		</div>
+	</div>
+	<div class="kt-portlet__body" style="padding-top: 0px;">
+		<form class="kt-form" [formGroup]="ItemsForm">
+			<div class="form-group kt-form__group row" style="padding: 0px;">
+				<div class="col-md-12 kt-margin-bottom-10-mobile">
+					<mat-form-field class="mat-form-field-fluid" appearance="none">
+						<input matInput placeholder="" formControlName="FileDuLieu" style="display:none;" readonly (click)="selectFile(fileUploadImport)">
+						<button [disabled]="processImport" mat-raised-button style="padding: 0px 20px;" color="info" (click)="selectFile(fileUploadImport)" type="button">
+							Chọn file
+						</button>&nbsp;&nbsp;
+						<input #fileUploadImport type="file" name="fileUploadImport" accept=".txt" (change)="FileSelected($event)" style="display: none">
+						<button [disabled]="processImport" style="padding: 0px 20px;" type="button" mat-raised-button color="accent" (click)="ImportFileMau()">
+							<mat-icon style="margin-top: 2%" class="mat-Icon-update">vertical_align_bottom</mat-icon>
+							Tải file mẫu
+                        </button>&nbsp;&nbsp;
+                        <button style="padding: 0px 20px;" 
+                                type="button" 
+                                mat-raised-button 
+                                color="accent" 
+                                [disabled]="processImport"
+                                (click)="save()">
+                            {{processImport? 'Đang tiến hành xử lý dữ liệu ...' : 'Lưu'}}
+                        </button>&nbsp;&nbsp;
+					</mat-form-field>
+				</div>
+				<div class="col-md-6 kt-margin-bottom-10-mobile">
+					<mat-form-field class="mat-form-field-fluid" floatLabel="always">
+						<mat-label>File đã chọn</mat-label>
+						<input matInput  formControlName="FileDuLieu" placeholder="Vui lòng chọn file" readonly type="text" disabled>
+					</mat-form-field>
+				</div>
+				<div class="col-lg-6 kt-margin-bottom-10-mobile">
+					<mat-form-field class="mat-form-field-fluid">
+						<mat-select disableOptionCentering #Type placeholder="Chọn loại sản phẩm" [(value)]="selectedType">
+							<mat-option>
+								<ngx-mat-select-search  [placeholderLabel]="listType.length > 0 ? 'Tìm kiếm...' : 'Không tìm thấy dữ liệu'" 
+								[noEntriesFoundLabel]="'Không tìm thấy kết quả phù hợp'" 
+								[ngModelOptions]="{standalone: true}" [(ngModel)]="Type_FilterCtrl" 
+								(ngModelChange)="filterListType()">
+								</ngx-mat-select-search>
+							</mat-option>
+							<mat-option *ngFor="let tmp of filtered_Type | async " value="{{tmp.IdType}}">
+								{{tmp.Name}}
+							</mat-option>
+							
+						</mat-select>
+					</mat-form-field>
+                </div>
+				<div class="col-md-12 kt-margin-bottom-10-mobile">
+					<p *ngIf="processImport">Đang đọc dữ liệu....<mat-progress-bar mode="indeterminate"></mat-progress-bar></p>
+                </div>
+			</div>
+        </form>
+        <div>
+			<div class="mat-table-wrapper">
+				<table mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" cdkDropListGroup>
+					<ng-container matColumnDef="no" >
+						<th style="white-space: nowrap;" mat-header-cell *matHeaderCellDef> # </th>
+						<td style="white-space: nowrap;" mat-cell *matCellDef="let element"> {{dataSource.data.indexOf(element) + 1}} </td>
+					</ng-container>
+
+                    <ng-container matColumnDef="SanPham">
+                        <th mat-header-cell *matHeaderCellDef> Sản phẩm </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Type">
+                        <th mat-header-cell *matHeaderCellDef> Loại </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="Money">
+                        <th mat-header-cell *matHeaderCellDef> Giá </th>
+                        <td mat-cell *matCellDef="let element"> {{f_currency(element.Money)}} </td>
+                    </ng-container>
+                  
+                    <ng-container matColumnDef="Sales">
+                        <th mat-header-cell *matHeaderCellDef> Giảm giá </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Sales}} % </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="LinkImage">
+                        <th mat-header-cell *matHeaderCellDef> Link hình </th>
+                        <td mat-cell *matCellDef="let element"> {{element.LinkImage}} </td>
+                    </ng-container>
+
+					<ng-container matColumnDef="ThaoTac">
+						<th style="white-space: nowrap;" mat-header-cell *matHeaderCellDef> Thao tác </th>
+						<td style="white-space: nowrap;" mat-cell *matCellDef="let element; let i = index"> 
+							<button type="button" (click)="deleteItem(i)" [disabled]="processImport"  mat-icon-button color="warn" type="button"  matTooltip="Xóa">
+								<mat-icon>delete</mat-icon>
+							</button>
+						</td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+					
+				</table>
+				<div class="mat-table-message" *ngIf="dataSource.data.length == 0">Không có dữ liệu</div> 
+			</div>
+		</div>
+		<div class="mat-table-bottom" >
+			<div class="flt-page">
+				<mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10,50,100]" [showFirstLastButtons]="true"></mat-paginator>
+			</div>
+		</div>
+	</div>
+</div>

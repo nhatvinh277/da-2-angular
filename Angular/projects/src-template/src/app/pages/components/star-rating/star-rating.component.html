@@ -1,0 +1,8 @@
+<button mat-icon-button *ngFor="let ratingId of ratingArr;index as i" [id]="'star_'+i" (click)="onClick(i+1)" matTooltipPosition="above">
+  <mat-icon [ngStyle]="{'color' : color}">
+    {{showIcon(i)}}
+  </mat-icon>
+</button>
+<mat-error *ngIf="starCount == null || starCount == 0">
+  Vui lòng chọn số sao cho đánh giá của bạn
+</mat-error>

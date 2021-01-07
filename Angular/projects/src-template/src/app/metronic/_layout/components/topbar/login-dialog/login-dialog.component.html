@@ -1,0 +1,113 @@
+<div *ngIf="isLogin">
+  <h2>Đăng nhập</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="username">Tên tài khoản</label>
+          <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required">Tên tài khoản bắt buộc nhập</div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Mật khẩu bắt buộc nhập</div>
+          </div>
+      </div>
+      <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Đăng nhập
+          </button>
+          <a (click)="change(false)" class="btn btn-link">Đăng ký</a>
+      </div>
+  </form>
+</div>
+<div *ngIf="!isLogin">
+  <h2>Đăng ký</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="row form-group">
+        <div class="col-md-6">
+          <label for="fullname">Họ và tên</label>
+          <input type="text" formControlName="fullname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors }" />
+          <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
+              <div *ngIf="f.fullname.errors.required">Vui lòng nhập lại họ và tên</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="username">Tên tài khoản</label>
+          <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required">Tên tài khoản bắt buộc nhập</div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-6">
+          <label for="password">Mật khẩu</label>
+          <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Mật khẩu bắt buộc nhập</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="password">Nhập lại mật khẩu</label>
+          <input type="password" formControlName="repassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.errors.required">Vui lòng nhập lại mật khẩu</div>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-6">
+          <label for="address">Địa chỉ</label>
+          <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+          <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+              <div *ngIf="f.address.errors.required">Vui lòng nhập địa chỉ</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="nationality">Quốc tịch</label>
+          <input type="text" formControlName="nationality" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nationality.errors }" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-6">
+          <div>
+            <label for="gender">Giới tính</label>
+          </div>
+          <div>
+            <input matInput style="display: none">
+            <mat-radio-group formControlName="gender" aria-label="Select an option" >
+                <mat-radio-button [checked]="true" value="0" >Nữ</mat-radio-button>
+                <mat-radio-button value="1" >Nam</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
+              <div *ngIf="f.fullname.errors.required">Vui lòng chọn giới tính</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <mat-label >Ngày sinh</mat-label>
+          </div>
+          <div style="display: flex;">
+            <input matInput class="form-control" [ngClass]="{ 'is-invalid': submitted && f.birthdate.errors }" (focus)="$event.target.select()" formControlName="birthdate" type="text" [matDatepicker]="ns">
+            <mat-datepicker-toggle matSuffix [for]="ns"></mat-datepicker-toggle>
+            <mat-datepicker #ns></mat-datepicker>
+          </div>
+          <div *ngIf="submitted && f.birthdate.errors" class="invalid-feedback">
+            <div *ngIf="f.birthdate.errors.required">Vui lòng nhập ngày sinh</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+          <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Đăng ký
+          </button>
+          <a (click)="change(true)" class="btn btn-link">Trở lại đăng nhập</a>
+      </div>
+  </form>
+</div>

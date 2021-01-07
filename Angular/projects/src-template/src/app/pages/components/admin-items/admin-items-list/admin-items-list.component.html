@@ -1,0 +1,90 @@
+<div class="Account__StyledAccountLayoutInner-sc-1d5h8iz-2 edAZXd">
+	<div class="styles__StyledAccountListOrder-sc-6t66uv-0 glOjBk">
+		<div class="heading">Quản lý sản phẩm, mặt hàng</div>
+		<div class="heading">
+      
+      <div class="row">
+
+        <div class="col-md-6 kt-margin-bottom-10-mobile">
+          <mat-form-field class="mat-form-field-fluid">
+            <mat-label>Tìm kiếm theo: <strong>Tên, loại sản phẩm</strong></mat-label>
+            <input matInput (focus)="$event.target.select()" type="search" (change)="loadList()" placeholder="" spellcheck="false" autocomplete="off" class="search-input" #keywordSearch>
+            <button type="button" color="warn" *ngIf="keywordSearch.value" mat-button  matSuffix mat-icon-button aria-label="Clear" (click)="keywordSearch.value = ''; ">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          
+        </div>
+        <div class="col-md-6 kt-margin-bottom-10-mobile align-items-left">
+          <!-- <button mat-raised-button color="primary" matTooltip="Thêm mới">
+            <mat-icon style="margin-top: 2%" class="mat-Icon-update">check_circle</mat-icon>
+            Thêm mới
+          </button>&nbsp; -->
+          
+          <button  (click)="ImportExcel()"  mat-raised-button color="primary" matTooltip="Import dữ liệu">
+            <mat-icon style="margin-top: 2%" class="mat-Icon-update">import_contacts</mat-icon>
+            Import dữ liệu
+          </button>&nbsp;
+        </div>
+      </div>
+    </div>
+		<div class="inner">
+			<div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+      
+          <!-- <ng-container matColumnDef="MaDonHang">
+            <th mat-header-cell *matHeaderCellDef> Mã đơn hàng </th>
+            <td mat-cell *matCellDef="let element">
+                <span  matTooltip="Đánh giá sản phẩm" class="link-hd"(click)="review(element)" style="white-space: nowrap; text-align: left">
+                    {{element.TransactionCode}} 
+                </span>
+            </td>
+          </ng-container> -->
+					<ng-container matColumnDef="no" >
+						<th style="white-space: nowrap; width:  5%  !important;" mat-header-cell *matHeaderCellDef> # </th>
+						<td style="white-space: nowrap; width:  5%  !important;" mat-cell *matCellDef="let element"> {{ItemsResult.indexOf(element) + 1}} </td>
+					</ng-container>
+      
+          <ng-container matColumnDef="SanPham">
+            <th mat-header-cell *matHeaderCellDef> Sản phẩm </th>
+            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Type">
+            <th mat-header-cell *matHeaderCellDef> Loại </th>
+            <td mat-cell *matCellDef="let element"> {{element.Type}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Money">
+            <th mat-header-cell *matHeaderCellDef> Giá </th>
+            <td mat-cell *matCellDef="let element"> {{f_currency(element.Money)}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Sales">
+            <th mat-header-cell *matHeaderCellDef> Giảm giá </th>
+            <td mat-cell *matCellDef="let element"> {{element.Sales}} % </td>
+          </ng-container>
+
+          <ng-container matColumnDef="LinkImage">
+            <th mat-header-cell *matHeaderCellDef> Link hình </th>
+            <td mat-cell *matCellDef="let element"> {{element.LinkImage}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ThaoTac">
+            <th mat-header-cell *matHeaderCellDef> Thao tác </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="warn" type="button"  matTooltip="Xóa">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      
+        <mat-paginator [pageSize]="10" [length]="dataSource.paginatorTotal$ | async" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+		</div>
+	</div>
+</div>

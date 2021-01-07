@@ -1,0 +1,46 @@
+<div class="dialog-popup">
+	<div class="dialog-header kt-portlet__head__custom">
+		<div class="header-progress">
+			<!-- here can place a progress bar-->
+			<mat-progress-bar mode="indeterminate" *ngIf="viewLoading"></mat-progress-bar>
+		</div>
+		<div class="header-label">
+			<h3 class="head-title">{{data.title}}</h3>
+			<span class="kt-portlet__head-icon kt-hide">
+				<i class="la la-gear"></i>
+			</span>
+		</div>
+	</div>
+	<hr>
+	<div class="dialog-form">
+		<div class="dialog-body">
+			<div class="form-group row">
+				<div class="col-lg-12">
+					Tên mặt hàng: <b>{{data.data.Name}}</b> 
+				</div>
+				<div class="col-lg-12">
+					Số tiền: <b>{{f_currency(data.data.Money)}} / 1 sản phẩm</b>
+				</div>
+				<div class="col-lg-12">
+					Số lượng: <b style="color: red;">{{data.data.Quantity}}</b>
+				</div>
+				
+				<div class="col-lg-12">
+					Tổng tiền: <b style="color: red;">{{f_currency(getTotal())}}</b>
+				</div>
+				<div class="col-lg-12">
+					<hr>
+				</div>
+				<div class="col-lg-12">
+					{{viewLoading ? data.waitDesciption : data.description}}
+				</div>
+			</div>
+		</div>
+		<div class="dialog-foot text-right">
+			<div class="form-actions form-actions-sm">
+				<button mat-button (click)="onNoClick()">Không</button>&nbsp;
+				<button mat-button (click)="onYesClick()" color="primary" cdkFocusInitial [disabled]="viewLoading">Đồng ý</button>
+			</div>
+		</div>
+	</div>
+</div>

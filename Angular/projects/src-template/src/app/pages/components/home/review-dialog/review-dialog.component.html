@@ -1,0 +1,38 @@
+<div class="dialog-popup">
+	<div class="dialog-header kt-portlet__head__custom">
+		<div class="header-progress">
+			<!-- here can place a progress bar-->
+			<mat-progress-bar mode="indeterminate" *ngIf="viewLoading"></mat-progress-bar>
+		</div>
+		<div class="header-label">
+			<h3 class="head-title">{{data.title}}</h3>
+			<span class="kt-portlet__head-icon kt-hide">
+				<i class="la la-gear"></i>
+			</span>
+		</div>
+	</div>
+	<hr style="border-top:1px solid">
+	<div class="dialog-form">
+		<div class="dialog-body">
+			<div class="row">
+				<label class="col-md-12">
+					1. Đánh giá của bạn về sản phẩm này: <mat-star-rating [rating]="rating"  [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+				</label>
+			</div>
+			
+			<div class="row">
+				<label class="col-md-12">2. Viết nhận xét của bạn vào bên dưới:</label>
+				<mat-form-field class="col-md-12">
+					<textarea matInput [(ngModel)]='contents' placeholder="Nhận xét của bạn về sản phẩm này" matTextareaAutosize matAutosizeMinRows="5"
+					matAutosizeMaxRows="3"></textarea>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="dialog-foot text-right">
+			<div class="form-actions form-actions-sm">
+				<button mat-button (click)="onNoClick()">Không</button>&nbsp;
+				<button mat-button (click)="onYesClick()" color="primary" cdkFocusInitial [disabled]="viewLoading">Đồng ý</button>
+			</div>
+		</div>
+	</div>
+</div>
