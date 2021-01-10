@@ -10,7 +10,7 @@ const API_ROOT_URL = environment.ApiRoot + '/items';
 const API_REVIEW_URL = environment.ApiRoot + '/review';
 
 @Injectable()
-export class HistoryService {
+export class AdminItemService {
 	lastFilter$: BehaviorSubject<QueryParamsModel> = new BehaviorSubject(new QueryParamsModel({}, 'asc', '', 0, 10));
 	lastFilterDSExcel$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 	lastFilterInfoExcel$: BehaviorSubject<any> = new BehaviorSubject(undefined);
@@ -32,6 +32,11 @@ export class HistoryService {
 		const httpHeaders = this.httpUtils.getHttpHeaders();
 		const url = `${API_REVIEW_URL}/add`;
 		return this.http.post<any>(url, data, { headers: httpHeaders });
+	}
+	delete(itemId: any): Observable<any> {
+		const httpHeaders = this.httpUtils.getHttpHeaders();
+		const url = `${API_ROOT_URL}/Delete?IdItem=${itemId}`;
+		return this.http.post<any>(url, null, { headers: httpHeaders });
 	}
 
 }

@@ -73,7 +73,7 @@
           <ng-container matColumnDef="ThaoTac">
             <th mat-header-cell *matHeaderCellDef> Thao tác </th>
             <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="warn" type="button"  matTooltip="Xóa">
+              <button mat-icon-button color="warn" type="button" (click)="delete(element)" matTooltip="Xóa">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

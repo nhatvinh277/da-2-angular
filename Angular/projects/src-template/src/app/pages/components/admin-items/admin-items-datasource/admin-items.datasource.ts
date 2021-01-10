@@ -2,10 +2,10 @@ import { of } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { BaseDataSource } from '../../_common/_datasources/base.datasource';
 import { QueryParamsModel } from '../../_common/_models/query-params.model';
-import { HistoryService } from '../admin-items-service/admin-items.service';
+import { AdminItemService } from '../admin-items-service/admin-items.service';
 
 export class AdminItemsDataSource extends BaseDataSource {
-	constructor(private productsService: HistoryService) {
+	constructor(private productsService: AdminItemService) {
 		super();
 	}
 

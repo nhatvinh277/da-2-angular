@@ -3,12 +3,13 @@ import { merge } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { tap } from 'rxjs/operators';
 import { QueryParamsModel } from '../../_common/_models/query-params.model';
-import { HistoryService } from '../admin-items-service/admin-items.service';
+import { AdminItemService } from '../admin-items-service/admin-items.service';
 import { LayoutUtilsService } from '../../../../helpers/global/services/layout-utils.service';
 import { AdminItemsDataSource } from '../admin-items-datasource/admin-items.datasource';
 import { AdminItemsModel, DataItemsModel } from '../admin-items-model/admin-items.model';
 import { ImportComponent } from '../admin-import/admin-import.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ItemModel } from '../../home/models/home.model';
 @Component({
   selector: 'app-admin-items-list',
   templateUrl: './admin-items-list.component.html',
@@ -19,7 +20,7 @@ export class AdminItemsListComponent implements OnInit {
 	@ViewChild('keywordSearch', {static: true}) keywordSearch: ElementRef;
 	constructor(
 		public dialog: MatDialog,
-		private service: HistoryService,
+		private service: AdminItemService,
 		private layoutUtilsService: LayoutUtilsService,
 		private changeDetectorRefs: ChangeDetectorRef,
 		) {}
@@ -100,5 +101,25 @@ export class AdminItemsListComponent implements OnInit {
 			this.loadList();
 		});
 	}
-
+	delete(_item: DataItemsModel) {
+		const _title: string = 'Xóa sản phẩm';
+		const _description: string = 'Bạn có chắc muốn xóa sản phẩm không?';
+		const _waitDesciption: string = 'Sản phẩm đang được xóa...';
+		const _deleteMessage = `Sản phẩm đã được xóa`;
+		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
+		dialogRef.afterClosed().subscribe(res => {
+			if (!res) {
+				return;
+			}
+			this.service.delete(_item.IdItem).subscribe(res => {
+				if (res && res.status === 1) {
+					this.layoutUtilsService.showInfo(_deleteMessage);
+					this.loadList();
+				}
+				else {
+                    this.layoutUtilsService.showErorr(res.error.message);
+				}
+			});
+		});
+	}
 }

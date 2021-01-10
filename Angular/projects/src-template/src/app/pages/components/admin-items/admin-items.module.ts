@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { LibExportModule } from 'library';
 import { ReferenceModule } from '../../reference.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HistoryService } from './admin-items-service/admin-items.service';
+import { AdminItemService } from './admin-items-service/admin-items.service';
 import { AdminItemsComponent } from './admin-items.component';
 import { AdminItemsListComponent } from './admin-items-list/admin-items-list.component';
 import { ImportComponent } from './admin-import/admin-import.component';
@@ -34,7 +34,7 @@ import { ImportComponent } from './admin-import/admin-import.component';
     ]),
   ],
   providers:[
-    HistoryService
+    AdminItemService
   ]
 })
 export class AdminItemsModule {}

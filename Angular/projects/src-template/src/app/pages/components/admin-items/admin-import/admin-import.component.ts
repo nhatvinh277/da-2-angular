@@ -110,10 +110,10 @@ export class ImportComponent implements OnInit, OnDestroy {
 				});
 				
 				this.dataSource.data = this.tmpChiTietImport;
-				this.processImport = false;				
-				if (!(this.changeDetect as ViewRef).destroyed) {
-					this.changeDetect.detectChanges()
-				}
+			}
+			this.processImport = false;				
+			if (!(this.changeDetect as ViewRef).destroyed) {
+				this.changeDetect.detectChanges()
 			}
 		});
 	}
@@ -262,6 +262,7 @@ export class ImportComponent implements OnInit, OnDestroy {
 						service.data_import.next(res.data);
 					}
 					else {
+						service.data_import.next([]);
 						service.lastFilterDSExcel$.next([]);
 						service.lastFilterInfoExcel$.next(undefined);
 						return;
